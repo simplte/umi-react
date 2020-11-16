@@ -21,33 +21,14 @@ const index = ({users}) => {
       dataIndex: 'address',
       key: 'address',
     },
-    {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: tags => (
-        <>
-          {tags.map(tag => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
+    
     {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
+          <a>删除 </a>
+          <a>添加</a>
         </Space>
       ),
     },
@@ -64,6 +45,6 @@ const index = ({users}) => {
 
 const mapStateToProps = (module)=> {
   console.log(module)
-  return {users:module.userModel}
+  return {users:module.userModel.data}
 }
 export default connect(mapStateToProps)(index)

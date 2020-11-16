@@ -1,4 +1,5 @@
 import { Subscription,Reducer,Effect } from 'umi';
+import {getRemoteList} from './service'
 // 类型定义
 type _dataObj= {
   key: string;
@@ -78,8 +79,8 @@ const UserModel: UserModelType = {
     getlist(state, {type,payLoad}) {
         console.log(type,payLoad)
         if(payLoad.isEffect) {
-            
-        return state.effectData
+            // 直接返回 payload可以展示 如果返回data展示不出来
+          return payLoad
         }else {
             
         return state.data
@@ -87,13 +88,15 @@ const UserModel: UserModelType = {
     }
   },
   effects: {
-      *effectGetList(action, {put}) {
-          console.log(action, put)
+      *effectGetList(action, {put,call}) {
+        const data = yield call(getRemoteList)
+        console.log(data) 
           yield put({
               type: 'getlist',
               payLoad: {
                   test:'异步过来的',
-                  isEffect: true
+                  isEffect: true,
+                  data
               }
           })
       }
@@ -103,15 +106,15 @@ const UserModel: UserModelType = {
       return history.listen(({ pathname }) => {
         if (pathname == '/users') {
             console.log(111)
+          // dispatch({
+          //   type: 'getlist',
+          //   payLoad: {
+          //       isEffect: false
+          //   }
+          // });
           dispatch({
-            type: 'getlist',
-            payLoad: {
-                isEffect: false
-            }
+            type: 'effectGetList',
           });
-        //   dispatch({
-        //     type: 'effectGetList',
-        //   });
         }
       });
     },
