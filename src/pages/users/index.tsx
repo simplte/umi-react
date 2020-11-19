@@ -1,9 +1,10 @@
-import React from 'react';
-import {Table, Tag, Space} from 'antd'
-
+import React, {useState} from 'react';
+import {Table,  Space, } from 'antd'
+import UserModal from './components/UserModal'
 import { connect } from 'umi';
 const index = ({users}) => {
-
+  const [modalVisible, setModalVisible ] = useState(false)
+  const [txt, setTitle] = useState("")
   const columns = [
     {
       title: 'Name',
@@ -27,18 +28,26 @@ const index = ({users}) => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a>删除 </a>
+          <a onClick={()=> {tapDeleteOpen(record)}}>删除 </a>
           <a>添加</a>
         </Space>
       ),
     },
   ];
 
-  
+  const tapDeleteOpen=(record) => {
+    console.log(record)
+    setTitle(record.name)
+    setModalVisible(true)
+  }
+  const tapDeleteClose=() => {
+    setModalVisible(false)
+  }
   return (
     
     <div className="listBox">
      <Table columns={columns} dataSource={users} />
+     <UserModal isShow={modalVisible} title={txt} handleClose={tapDeleteClose}></UserModal>
     </div>
   );
 }

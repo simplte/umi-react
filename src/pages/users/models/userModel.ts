@@ -105,7 +105,7 @@ const UserModel: UserModelType = {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname == '/users') {
-            console.log(111)
+          console.log(111)
           // dispatch({
           //   type: 'getlist',
           //   payLoad: {
